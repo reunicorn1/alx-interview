@@ -4,6 +4,7 @@
 """
 from queue import Queue
 
+
 def canUnlockAll(boxes):
     """
     boxes (list): a list of lists for all boxes and their keys
