@@ -4,7 +4,7 @@
 """
 
 
-def minOperations(n: int) -> int:
+def minOperations(n):
     """
     This function calculates the fewest number of operations needed
     to exactly n H characters in a text file using Copy, Paste
@@ -28,4 +28,4 @@ def minOperations(n: int) -> int:
         for j in range(1, i // 2 + 1):
             if (i % j == 0):
                 dp[i] = min(dp[i], (dp[j] + i // j))
-    return int(dp[n])
+    return dp[n]
