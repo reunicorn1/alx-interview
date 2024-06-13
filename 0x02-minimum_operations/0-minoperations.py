@@ -18,7 +18,7 @@ def minOperations(n: int) -> int:
     Returns:
     the minimum number of operations
     """
-    if (n < 1):
+    if n < 1 or type(n) is not int:
         return 0
 
     dp = [float('inf')] * (n + 1)
