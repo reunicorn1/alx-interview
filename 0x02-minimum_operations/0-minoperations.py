@@ -18,6 +18,9 @@ def minOperations(n: int) -> int:
     Returns:
     the minimum number of operations
     """
+    if (n < 1):
+        return 0
+
     dp = [float('inf')] * (n + 1)
     dp[1] = 0
 
@@ -25,4 +28,4 @@ def minOperations(n: int) -> int:
         for j in range(1, i // 2 + 1):
             if (i % j == 0):
                 dp[i] = min(dp[i], (dp[j] + i // j))
-    return dp[n]
+    return int(dp[n])
