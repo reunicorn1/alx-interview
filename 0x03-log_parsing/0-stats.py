@@ -78,10 +78,9 @@ def main():
             if (n % 10 == 0):
                 print_log()
     print_log()
-except KeyboardInterrupt as e:
-    flush()
-    raise e
-
+    except KeyboardInterrupt as e:
+        print_log()
+        raise e
 
 
 if __name__ == '__main__':
