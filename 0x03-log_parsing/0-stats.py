@@ -87,9 +87,9 @@ def main():
                 count += 1
             if (count % 10 == 0):
                 print_log()
+        print_log
     except KeyboardInterrupt or EOFError as e:
         print_log()
-        raise e
 
 
 if __name__ == '__main__':
