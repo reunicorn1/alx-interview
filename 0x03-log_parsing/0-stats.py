@@ -61,8 +61,8 @@ def processer(line):
                 file_size += int(size)
                 return True
         return False
-    except IndexError:
-        pass
+    except IndexError or ValueError:
+        return False
 
 
 def main():
