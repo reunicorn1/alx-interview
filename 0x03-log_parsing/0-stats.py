@@ -89,7 +89,7 @@ def main():
             if (count % 10 == 0):
                 print_log()
         print_log()
-    except KeyboardInterrupt or EOFError:
+    except KeyboardInterrupt:
         print_log()
 
 
