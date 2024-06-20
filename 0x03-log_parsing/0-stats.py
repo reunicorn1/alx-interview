@@ -27,7 +27,7 @@ def regex(line):
     log_pattern = re.compile(
             r'^\d{1,3}(\.\d{1,3}){3} - '
             r'\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6}\] '
-            r'"GET \/projects\/260 HTTP\/1.1" ([1-5]0[0-5]) (\d+)$'
+            r'"GET \/projects\/260 HTTP\/1.1" ([1-5]0[0-5]) (\d{0,4})$'
     )
     return log_pattern.search(line)
 
@@ -75,8 +75,8 @@ def main():
             if regex(line):
                 if processer(line):
                     count += 1
-                    if (count % 10 == 0):
-                        print_log()
+            if (count % 10 == 0):
+                print_log()
         print_log()
     except KeyboardInterrupt:
         print_log()
