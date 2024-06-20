@@ -52,17 +52,17 @@ def processer(line):
     """
     global file_size
     global status_code
+    parts = line.split()
     try:
-        size = line.split()[-1]
-        status = line.split()[-2]
-        if size.isdigit() and status.isdigit():
-            if int(status) in list(status_code.keys()):
-                status_code[int(status)] += 1
-                file_size += int(size)
-                return True
+        size = int(parts[-1])
+        file_size += size
+        status = int(parts[-2])
+        if status in status_code:
+            status_code[status] += 1
+            return True
+    except (IndexError, ValueError):
         return False
-    except IndexError or ValueError:
-        return False
+    return False
 
 
 def main():
