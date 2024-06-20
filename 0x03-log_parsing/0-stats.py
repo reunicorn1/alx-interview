@@ -55,9 +55,12 @@ def processer(line):
     """
     global file_size
     global status_code
-    file_size += int(line.split()[-1])
-    status = int(line.split()[-2])
-    status_code[status] += 1
+    size = line.split()[-1]
+    status = line.split()[-2]
+    if size.isdigit() and status.isdigit():
+        if int(status) in list(status_code.keys()):
+            status_code[int(status)] += 1
+            file_size += int(size)
 
 
 def handle_signal(signum, frame):
