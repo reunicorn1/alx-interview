@@ -90,7 +90,6 @@ def main():
                 print_log()
     except KeyboardInterrupt or EOFError:
         print_log()
-        sys.exit(0)
 
 
 if __name__ == '__main__':
