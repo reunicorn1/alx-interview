@@ -55,7 +55,7 @@ def processer(line):
     """
     global file_size
     global status_code
-    regex_filesize = re.compile('[0-9]{0,3}$')
+    regex_filesize = re.compile('[0-9]{0,4}$')
     regex_status = re.compile('[1-5]0[0-5](?= [0-9]{0,4}$)')
     file_size += int(regex_filesize.search(line).group())
     status = int(regex_status.search(line).group())
