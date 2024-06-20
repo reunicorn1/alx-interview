@@ -83,9 +83,8 @@ def main():
     count = 0
     try:
         for line in sys.stdin:
-            if regex(line):
-                if processer(line):
-                    count += 1
+            if processer(line):
+                count += 1
             if (count % 10 == 0):
                 print_log()
     except KeyboardInterrupt or EOFError:
