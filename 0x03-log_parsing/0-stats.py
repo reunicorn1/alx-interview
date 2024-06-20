@@ -24,14 +24,12 @@ def regex(line):
     -------
         Either true or false if it matches format or not
     """
-    group1 = r'^(\d{0,3}.){3}\d{0,3} - '
-    group2 = r'\[(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{6})\] '
-    group3 = r'"GET \/projects\/260 HTTP\/1.1" [1-5]0[0-5] (\d{0,4})$'
-    regex = group1 + '|' + group2 + '|' + group3
-    form = re.compile(regex)
-    if form.search(line):
-        return True
-    return False
+    log_pattern = re.compile(
+            r'^\d{1,3}(\.\d{1,3}){3} - '
+            r'\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6}\] '
+            r'"GET \/projects\/260 HTTP\/1.1" ([1-5]0[0-5]) (\d+)$'
+    )
+    return log_pattern.search(line)
 
 
 def print_log():
@@ -40,12 +38,10 @@ def print_log():
     """
     global file_size
     global status_code
-    print('File size:', file_size)
-    keys = sorted(list(status_code.keys()))
-    for key in keys:
-        if not status_code[key]:
-            continue
-        print('{}: {}'.format(key, status_code[key]))
+    print('File size:', file_size, flush=True)
+    for key in sorted(list(status_code.keys())):
+        if status_code[key]:
+            print('{:s}: {:d}'.format(str(key), status_code[key]), flush=True)
 
 
 def processer(line):
@@ -71,6 +67,7 @@ def handle_signal(signum, frame):
     This function handles ctrl+C signal to execute print_log function
     """
     print_log()
+    sys.exit(0)
 
 
 signal.signal(signal.SIGINT, handle_signal)
