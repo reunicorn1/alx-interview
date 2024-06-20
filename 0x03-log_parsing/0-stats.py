@@ -26,7 +26,7 @@ def regex(line):
     """
     group1 = r'^(\d{0,3}.){3}\d{0,3} - '
     group2 = r'\[(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{6})\] '
-    group3 = r'"GET \/projects\/260 HTTP\/1.1" [1-5]0[0-5] (\d{0,3})$'
+    group3 = r'"GET \/projects\/260 HTTP\/1.1" [1-5]0[0-5] (\d{0,4})$'
     regex = group1 + '|' + group2 + '|' + group3
     form = re.compile(regex)
     if form.search(line):
@@ -60,7 +60,7 @@ def processer(line):
     global file_size
     global status_code
     regex_filesize = re.compile('[0-9]{0,3}$')
-    regex_status = re.compile('[1-5]0[0-5](?= [0-9]{0,3}$)')
+    regex_status = re.compile('[1-5]0[0-5](?= [0-9]{0,4}$)')
     file_size += int(regex_filesize.search(line).group())
     status = int(regex_status.search(line).group())
     status_code[status] += 1
