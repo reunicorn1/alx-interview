@@ -1,87 +1,52 @@
 #!/usr/bin/python3
 """
-0. Log parsing
+This is a script which supplies multiple functions to log parse
 """
-import re
-import signal
 import sys
 
-file_size = 0
-status_code = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
+
+total_size = 0
+code = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
 
 
-def regex(line):
+def log(status_code, size):
+    """This function logs data from each line of the stimulated HTTP
+    GET request for /project/260
+
+    Args:
+       status_code (str)
+       size (str)
     """
-    This function checks the line format and if it matches the specificed
-    format it returns true otherwise false
+    global total_size
+    global code
+    total_size += int(size)
+    code[int(status_code)] += 1
 
-    Parameters:
-    ----------
-    line: str
-        The line from stdin
 
-    Returns:
-    -------
-        Either true or false if it matches format or not
+def flush():
+    """This function prints data existing into the stdout in a certain
+    format
     """
-    log_pattern = re.compile(
-            r'^\d{1,3}(\.\d{1,3}){3} - '
-            r'\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6}\] '
-            r'"GET \/projects\/260 HTTP\/1.1" ([1-5]0[0-5]) (\d{0,4})$'
-    )
-    return log_pattern.search(line)
+    global total_size
+    global code
+    print("File size: {}".format(total_size))
+    for key in sorted(code):
+        if code[key] == 0:
+            pass
+        else:
+            print("{}: {}".format(key, code[key]))
 
 
-def print_log():
-    """
-    This function prints the statistics from input read
-    """
-    global file_size
-    global status_code
-    print('File size:', file_size)
-    for key in sorted(list(status_code.keys())):
-        if status_code[key]:
-            print('{}: {}'.format(key, status_code[key]))
-
-
-def processer(line):
-    """
-    This is the main engine which process the lines read
-
-    Parameters:
-    ----------
-    line: str
-        The processed line
-    """
-    global file_size
-    global status_code
-    size = line.split()[-1]
-    status = line.split()[-2]
-    if size.isdigit() and status.isdigit():
-        if int(status) in list(status_code.keys()):
-            status_code[int(status)] += 1
-            file_size += int(size)
-            return True
-    return False
-
-
-def main():
-    """
-    The entry point of the app
-    """
-    count = 0
-    try:
-        for line in sys.stdin:
-            if len(line.split()) == 9:
-                if processer(line):
-                    n += 1
+n = 0
+try:
+    for line in sys.stdin:
+        if len(line.split()) == 9:
+            size, status_code = line.split()[8], line.split()[7]
+            log(status_code, size)
+            n += 1
             if (n % 10 == 0):
-                print_log()
-    print_log()
-    except KeyboardInterrupt as e:
-        print_log()
-        raise e
-
-
-if __name__ == '__main__':
-    main()
+                flush()
+    flush()
+except KeyboardInterrupt as e:
+    flush()
+    raise e
