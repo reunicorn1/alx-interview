@@ -72,14 +72,16 @@ def main():
     count = 0
     try:
         for line in sys.stdin:
-            if regex(line):
+            if len(line.split()) == 9:
                 if processer(line):
-                    count += 1
-            if (count % 10 == 0):
+                    n += 1
+            if (n % 10 == 0):
                 print_log()
-        print_log()
-    except KeyboardInterrupt:
-        print_log()
+    print_log()
+except KeyboardInterrupt as e:
+    flush()
+    raise e
+
 
 
 if __name__ == '__main__':
