@@ -34,19 +34,19 @@ def regex(line):
 
 def print_log():
     """
-    This function prints the statistics from input read so format
+    This function prints the statistics from input read
     """
     global file_size
     global status_code
     print('File size:', file_size, flush=True)
     for key in sorted(list(status_code.keys())):
         if status_code[key]:
-            print('{:s}: {:d}'.format(str(key), status_code[key]), flush=True)
+            print('{}: {}'.format(key, status_code[key]), flush=True)
 
 
 def processer(line):
     """
-    This is the main engine which process the lines and increment
+    This is the main engine which process the lines read
 
     Parameters:
     ----------
@@ -55,16 +55,17 @@ def processer(line):
     """
     global file_size
     global status_code
-    regex_filesize = re.compile('[0-9]{0,4}$')
-    regex_status = re.compile('[1-5]0[0-5](?= [0-9]{0,4}$)')
-    file_size += int(regex_filesize.search(line).group())
-    status = int(regex_status.search(line).group())
+    file_size += int(line.split()[-1])
+    status = int(line.split()[-2])
     status_code[status] += 1
 
 
 def handle_signal(signum, frame):
     """
     This function handles ctrl+C signal to execute print_log function
+
+    signum: Callable object
+    frame: Dataframe object
     """
     print_log()
     sys.exit(0)
