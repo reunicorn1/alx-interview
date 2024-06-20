@@ -65,17 +65,6 @@ def processer(line):
     return False
 
 
-def handle_signal(signum, frame):
-    """
-    This function handles ctrl+C signal to execute print_log function
-
-    signum: Callable object
-    frame: Dataframe object
-    """
-    print_log()
-    sys.exit(0)
-
-
 def main():
     """
     The entry point of the app
@@ -86,8 +75,8 @@ def main():
             if regex(line):
                 if processer(line):
                     count += 1
-            if (count % 10 == 0):
-                print_log()
+                    if (count % 10 == 0):
+                        print_log()
         print_log()
     except KeyboardInterrupt:
         print_log()
