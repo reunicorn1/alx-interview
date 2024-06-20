@@ -73,14 +73,15 @@ def handle_signal(signum, frame):
     print_log()
 
 
+signal.signal(signal.SIGINT, handle_signal)
+
+
 def main():
     """
     The entry point of the app
     """
-    signal.signal(signal.SIGINT, handle_signal)
     count = 0
-    while sys.stdin.readline():
-        line = sys.stdin.readline().strip()
+    for line in sys.stdin:
         count += 1
         if regex(line):
             processer(line)
