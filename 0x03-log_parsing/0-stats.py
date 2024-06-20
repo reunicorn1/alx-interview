@@ -38,10 +38,10 @@ def print_log():
     """
     global file_size
     global status_code
-    print('File size:', file_size, flush=True)
+    print('File size:', file_size)
     for key in sorted(list(status_code.keys())):
         if status_code[key]:
-            print('{}: {}'.format(key, status_code[key]), flush=True)
+            print('{}: {}'.format(key, status_code[key]))
 
 
 def processer(line):
