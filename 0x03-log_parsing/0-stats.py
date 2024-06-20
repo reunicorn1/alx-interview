@@ -2,84 +2,67 @@
 """
 0. Log parsing
 """
-import re
-import signal
 import sys
-
-file_size = 0
-status_code = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
+from typing import Dict
 
 
-def regex(line):
-    """
-    This function checks the line format and if it matches the specificed
-    format it returns true otherwise false
-    Parameters:
-    ----------
-    line: str
-        The line from stdin
-    Returns:
-    -------
-        Either true or false if it matches format or not
-    """
-    log_pattern = re.compile(
-            r'^\d{1,3}(\.\d{1,3}){3} - '
-            r'\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6}\] '
-            r'"GET \/projects\/260 HTTP\/1.1" ([1-5]0[0-5]) (\d{0,4})$'
-    )
-    return log_pattern.search(line)
-
-
-def print_log():
+def print_log(acc: Dict) -> None:
     """
     This function prints the statistics from input read
     """
-    global file_size
-    global status_code
-    print('File size:', file_size)
-    for key in sorted(list(status_code.keys())):
-        if status_code[key]:
-            print('{}: {}'.format(key, status_code[key]))
+    print('File size: {}'.format(acc['file_size']))
+    for key, value in sorted(acc['status_code'].items()):
+        if value:
+            print('{}: {}'.format(key, value))
 
 
-def processer(line):
+def process_line(line: str, acc: Dict) -> bool:
     """
-    This is the main engine which process the lines read
+    Processes a single log line and updates the statistics
+
     Parameters:
     ----------
     line: str
         The processed line
+    acc: Dict
+        The accumulator dictionary to update statistics
+
+    Returns:
+    -------
+    bool
+        True if the line was processed successfully, False otherwise
     """
-    global file_size
-    global status_code
     parts = line.split()
     try:
         size = int(parts[-1])
-        file_size += size
+        acc['file_size'] += size
         status = int(parts[-2])
-        if status in status_code:
-            status_code[status] += 1
+        if status in acc['status_code']:
+            acc['status_code'][status] += 1
             return True
     except (IndexError, ValueError):
         return False
     return False
 
 
-def main():
+def main() -> None:
     """
     The entry point of the app
     """
     count = 0
+    acc = {'file_size': 0,
+           'status_code': {200: 0, 301: 0, 400: 0, 401: 0,
+                           403: 0, 404: 0, 405: 0, 500: 0}}
     try:
         for line in sys.stdin:
-            if regex(line):
-                if processer(line):
-                    count += 1
-            if (count % 10 == 0):
-                print_log()
-        print_log()
+            if process_line(line, acc):
+                count += 1
+                if count % 10 == 0:
+                    print_log(acc)
+        print_log(acc)
     except KeyboardInterrupt:
-        print_log()
+        print_log(acc)
+
 
 if __name__ == '__main__':
     main()
