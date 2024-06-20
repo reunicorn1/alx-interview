@@ -61,6 +61,8 @@ def processer(line):
         if int(status) in list(status_code.keys()):
             status_code[int(status)] += 1
             file_size += int(size)
+            return True
+    return False
 
 
 def handle_signal(signum, frame):
@@ -74,20 +76,21 @@ def handle_signal(signum, frame):
     sys.exit(0)
 
 
-signal.signal(signal.SIGINT, handle_signal)
-
-
 def main():
     """
     The entry point of the app
     """
     count = 0
-    for line in sys.stdin:
-        count += 1
-        if regex(line):
-            processer(line)
-        if (count % 10 == 0):
-            print_log()
+    try:
+        for line in sys.stdin:
+            if regex(line):
+                if processer(line):
+                    count += 1
+            if (count % 10 == 0):
+                print_log()
+    except KeyboardInterrupt or EOFError:
+        print_log()
+        sys.exit(0)
 
 
 if __name__ == '__main__':
