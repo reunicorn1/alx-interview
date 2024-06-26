@@ -16,27 +16,20 @@ def validUTF8(data: List[int]) -> bool:
 
     Returns: a boolean
     """
-    byte = 0
-    seq = False
+    remaining_bytes = 0
 
-    for i in data:
-        if not seq:
-            byte = bytesnumber(i)
-            if not byte:
+    for byte in data:
+        if not remaining_bytes:
+            remaining_bytes = bytesnumber(byte)
+           if not remaining_bytes:
                 return False
-            byte -= 1
-            seq = True
+            remaining_bytes -= 1
         else:
-            if i & 192 != 128:
+            if byte & 192 != 128:
                 return False
-            byte -= 1
+            remaining_bytes -= 1
 
-        if not byte:
-            seq = False
-
-    if not byte:
-        return True
-    return False
+    return remaining_bytes == 0
 
 
 def bytesnumber(num: int) -> int:
@@ -60,6 +53,7 @@ def bytesnumber(num: int) -> int:
                 return 4
             return 3
         return 2
+
     if num & 128 == 128:
         return 0
     return 1
