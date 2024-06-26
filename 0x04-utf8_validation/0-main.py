@@ -14,3 +14,39 @@ print(validUTF8(data))
 data = [229, 65, 127, 256]
 print(validUTF8(data))
 
+print('-----------------')
+
+data = [0x24, 0x61, 0x7A]
+print(validUTF8(data))
+
+data = [0xC3, 0xA9]
+print(validUTF8(data))
+
+data = [0xE2, 0x82, 0xAC]
+print(validUTF8(data))
+
+data = [0xF0, 0x9F, 0x98, 0x80]
+print(validUTF8(data))
+
+data = [0x24, 0xC2, 0xA2, 0xE2, 0x82, 0xAC, 0xF0, 0x9F, 0x98, 0x80]
+print(validUTF8(data))
+
+data = [0xC3, 0x28]
+print(validUTF8(data))
+
+data = [0xE2, 0x82]
+print(validUTF8(data))
+
+print('-----------------')
+
+data = [0xC0, 0x80]
+print(validUTF8(data))
+
+data = [0xC3, 0xA9, 0x80]
+print(validUTF8(data))
+
+data = []
+print(validUTF8(data))
+
+
+print(80 & 192)

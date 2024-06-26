@@ -21,15 +21,22 @@ def validUTF8(data: List[int]) -> bool:
 
     for i in data:
         if not seq:
-            byte = bytesnumber(i) - 1
+            byte = bytesnumber(i)
+            if not byte:
+                return False
+            byte -= 1
             seq = True
         else:
             if i & 192 != 128:
                 return False
             byte -= 1
+
         if not byte:
             seq = False
-    return True
+
+    if not byte:
+        return True
+    return False
 
 
 def bytesnumber(num: int) -> int:
@@ -46,10 +53,13 @@ def bytesnumber(num: int) -> int:
     --------
     the number of bytes to expect
     """
+
     if num & 192 == 192:
         if num & 224 == 224:
             if num & 240 == 240:
                 return 4
             return 3
         return 2
+    if num & 128 == 128:
+        return 0
     return 1
