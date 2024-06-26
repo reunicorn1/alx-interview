@@ -21,7 +21,7 @@ def validUTF8(data: List[int]) -> bool:
     for byte in data:
         if not remaining_bytes:
             remaining_bytes = bytesnumber(byte)
-           if not remaining_bytes:
+            if not remaining_bytes:
                 return False
             remaining_bytes -= 1
         else:
