@@ -2,9 +2,8 @@
 """
 0. Rotate 2D Matrix
 """
-from typing import List
 
-def rotate_2d_matrix(matrix: List[List[int]]) -> None:
+def rotate_2d_matrix(matrix):
     """
     In this method, a matrix is reotated 90 degrees clockwise
     Modifications to the matrix are made in-place.
