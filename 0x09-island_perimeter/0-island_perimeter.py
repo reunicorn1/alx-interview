@@ -3,6 +3,7 @@
 0x09. Island Perimeter
 """
 
+
 def island_perimeter(grid):
     """
     This function returns the perimeter of the island descibed
@@ -24,14 +25,14 @@ def island_perimeter(grid):
     for g in grid:
         g.append(0)
 
-    perimeter = 0;
+    perimeter = 0
 
     for y in range(len(grid) - 1):
         for x in range(len(grid[0]) - 1):
             if grid[y][x]:
                 # check down and right directions
-                    # if one directions is shared with a cube
-                    # subtract common sides
+                # if one directions is shared with a cube
+                # subtract common sides
                 if not grid[y][x + 1] and not grid[y + 1][x]:
                     perimeter += 4
                 elif not grid[y][x + 1] or not grid[y + 1][x]:
@@ -39,4 +40,4 @@ def island_perimeter(grid):
 
                 # if both sides are common, the cube worth zero
 
-    return perimeter;
+    return perimeter
